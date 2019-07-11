@@ -6,14 +6,15 @@ import AlcoholList from './Alcohol/AlcoholList';
 import Header from './Menu/Header';
 
 class App extends React.Component {
-  
+
   constructor(props){
     super(props);
     this.state = {
       masterAlcoholList: {},
       selectedAlcohol: null
     };
-    this.handleAddingNewAlcohol = this.handleAddingNewAlcohol.bind(this)
+    this.handleAddingNewAlcohol = this.handleAddingNewAlcohol.bind(this);
+    this.handleChangingSelectedAlcohol = this.handleChangingSelectedAlcohol.bind(this);
   }
 
   handleAddingNewAlcohol(newAlc){
@@ -23,13 +24,20 @@ class App extends React.Component {
     });
     this.setState({masterAlcoholList: newMasterAlcoholList});
   }
-  
+
+  handleChangingSelectedAlcohol(alcoholId){
+    this.setState({selectedAlcohol: alcoholId});
+  }
+
   render(){
     return(
       <div>
         <Header/>
         <Switch>
-          <Route exact path="/" render={()=><AlcoholList alcoholList = {this.state.masterAlcoholList} />}/>
+          <Route exact path="/" render={(props)=><AlcoholList alcoholList = {this.state.masterAlcoholList}
+          currentRouterPath={props.location.pathname}
+          onAlcoholSelection={this.handleChangingSelectedAlcohol}
+          selectedAlcohol={this.state.selectedAlcohol} />}/>
           <Route exact path="/newalc" render={()=><AlcoholForm onNewAlcoholCreation={this.handleAddingNewAlcohol}/>}/>
         </Switch>
       </div>
