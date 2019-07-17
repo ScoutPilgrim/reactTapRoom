@@ -1,9 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import c from './../../constants';
 
 function Alcohol(props){
+
+  function onAlcoholSelection(alcId){
+    const {dispatch} = props;
+    const action = {
+      type: c.SELECT_ALC,
+      alcId: alcId
+    };
+    dispatch(action);
+  }
+
   return(
-    <div onClick={()=>{props.onAlcoholSelection(props.alcoholId);}}>
+    <div onClick={()=>{onAlcoholSelection(props.alcoholId);}}>
       <h3>{props.name}</h3>
       <ul>
         <li>Alcohol Content - {props.alcoholContent}</li>
@@ -18,8 +30,7 @@ Alcohol.propTypes = {
   alcoholContent: PropTypes.string.isRequired,
   proof: PropTypes.string.isRequired,
   currentRouterPath: PropTypes.string,
-  onAlcoholSelection: PropTypes.func,
   alcoholId: PropTypes.string.isRequired
 };
 
-export default Alcohol;
+export default connect()(Alcohol);

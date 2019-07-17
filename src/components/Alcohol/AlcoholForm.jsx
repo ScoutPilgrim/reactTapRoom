@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import uuid from 'uuid';
+import c from './../../constants';
 
 function AlcoholForm(props){
   let _name = null;
@@ -7,8 +10,18 @@ function AlcoholForm(props){
   let _proof = null;
 
   function handleNewAlcoholFormSubmission(event){
+    const { dispatch } = props;
     event.preventDefault();
-    props.onNewAlcoholCreation({name: _name.value, alcoholContent: _alcoholContent.value + '%', proof: (parseInt(_proof.value)*2).toString()});
+    const action = {
+      type: c.ADD_ALC,
+      id: uuid.v4(),
+      name: _name.value,
+      alcoholContent: _alcoholContent.value + '%',
+      proof: (parseInt(_proof.value)*2).toString()
+    };
+
+    dispatch(action);
+
     _name = '';
     _alcoholContent = '';
     _proof = '';
@@ -42,4 +55,4 @@ AlcoholForm.propTypes = {
   onNewAlcoholCreation: PropTypes.func
 };
 
-export default AlcoholForm;
+export default connect()(AlcoholForm);
